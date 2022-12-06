@@ -15,7 +15,7 @@ class GameEngine():
         self.framerate = 60
         self.clock = pygame.time.Clock()
 
-        self.engine_conf = engine_config.get_dict('engine')
+        self.engine_conf = engine_config.get_dict('system')
 
         # Let's start up the game.
         # Init pygame
@@ -57,7 +57,7 @@ class GameEngine():
             'TEST_MODE': "(test_menu)"
         }[self.current_state]
 
-        ver = self.engine_conf.get_str('build')
+        ver = self.engine_conf.get_dict('engine', ValidatedDict({})).get_str('build')
         pygame.display.set_caption(f'BasedEngine V{ver} {engine_mode}')
 
         for event in pygame.event.get():
