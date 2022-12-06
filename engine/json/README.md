@@ -19,10 +19,10 @@ Used for storing game engine settings. User-editable.
         - `vsync`: Use VSync. Default: `true`
         - `hide_cursor`: Hide the cursor when mousing-over application. Default: `false`
     - `sound` tag: Sound volumes.
-        - `attract_volume`: Volume for attract audio. `1-10`. Default: `10`
-        - `system_volume`: Volume for system audio. `1-10`. Default: `10`
-        - `music_volume`: Volume for music. `1-10`. Default: `10`
-        - `sfx_volume`: Volume for sfx. `1-10`. Default: `10`
+        - `attract_volume`: Volume for attract audio. `1-10`. Default: `1.0`
+        - `system_volume`: Volume for system audio. `1-10`. Default: `1.0`
+        - `music_volume`: Volume for music. `1-10`. Default: `1.0`
+        - `sfx_volume`: Volume for sfx. `1-10`. Default: `1.0`
     - `network` tag: Network settings. Not really used ATM.
         - `enable`: Enable or disable the network. Default: `false`
     - `coin` tag: Coin settings.

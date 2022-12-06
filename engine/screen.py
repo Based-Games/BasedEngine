@@ -23,7 +23,7 @@ class Screen():
         else:
             self.icon = './engine/assets/icons/icon_low.png'
 
-    def initScreen(self) -> Tuple[int, int]:
+    def initScreen(self):
         # start display
         pygame.display.init()
 
