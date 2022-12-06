@@ -2,9 +2,11 @@
     "cSpell.words": [
         "borderless",
         "FULLSCREEN",
+        "jsondata",
         "NOFRAME",
         "pygame",
         "screenclass",
-        "screeninfo"
+        "screeninfo",
+        "vsync"
     ]
 }

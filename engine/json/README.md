@@ -16,6 +16,7 @@ Used for storing game engine settings. User-editable.
         - `resolution`: The screen resolution. Not used in full-screen. Default: `1920x1080`
         - `video_mode`: Used for storing the output type.
             - Modes: `full`, `borderless`, `window`. Self-explanatory. Default: `window`
+        - `vsync`: Use VSync. Default: `true`
         - `hide_cursor`: Hide the cursor when mousing-over application. Default: `false`
     - `sound` tag: Sound volumes.
         - `attract_volume`: Volume for attract audio. `1-10`. Default: `10`

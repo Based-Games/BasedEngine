@@ -4,6 +4,7 @@
             "screen": 0,
             "resolution": "1920x1080",
             "video_mode": "window",
+            "vsync": true,
             "hide_cursor": false 
         },
         "sound": {
