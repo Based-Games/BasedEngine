@@ -1,0 +1,59 @@
+{
+    "system": {
+        "display": {
+            "screen": 0,
+            "resolution": "1920x1080",
+            "video_mode": "window",
+            "hide_cursor": false 
+        },
+        "sound": {
+            "attract_volume": 10,
+            "system_volume": 10,
+            "music_volume": 10,
+            "sfx_volume": 10
+        },
+        "network": {
+            "enable": false,
+            "shop_name": null,
+            "location": null,
+            "reader_type": null,
+            "reader_cnt": 0,
+            "save_last_user": false,
+            "enable_update": false,
+            "server_path": "https://engine.ez4dj.com/"
+        },
+        "coin": {
+            "free_play": true,
+            "coin_per_credit": 1,
+            "remember_credit": true
+        },
+        "game": {
+            "load_type": "game"
+        },
+        "inputs": {
+            "p1_io": "HID",
+            "p2_io": "HID",
+            "p1_stick": 4,
+            "p2_stick": 4,
+            "jvs_board": null
+        },
+        "clock": {
+            "shop_close": {
+                "sunday": 1200,
+                "monday": 1200,
+                "tuesday": 1200,
+                "wednesday": 1200,
+                "thursday": 1200,
+                "friday": 1200,
+                "saturday": 1200,
+                "week": 1200,
+                "use_daily": false
+            }
+        },
+        "engine": {
+            "version": 1,
+            "build": "0.1 ALPHA",
+            "update_url": "pub/updates/engine/"
+        }
+    }
+}
