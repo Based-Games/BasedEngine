@@ -1,6 +1,5 @@
 from pygame import Surface, image, mixer
 import os
-from sys import exit
 
 from engine.common.validated import ValidatedDict
 from engine.common.constants import LogConstants
@@ -28,11 +27,11 @@ class AssetManager:
         asset_path = f"{self.asset_prefix}/images/{asset_name}"
 
         if os.path.exists(asset_path):
-            self.logger.writeLogEntry(f'Loading asset: {asset_name}', status=LogConstants.STATUS_OK_BLUE, tool="ASS_MAN")
+            self.logger.writeLogEntry(f'Loading asset: {asset_name}', status=LogConstants.STATUS_OK_BLUE, tool="ASSET_MGR")
             return image.load(asset_path)
 
         else:
-            self.logger.writeLogEntry(f'Couldn\'t find {asset_name}!', status=LogConstants.STATUS_FAIL, tool="ASS_MAN")
+            self.logger.writeLogEntry(f'Couldn\'t find {asset_name}!', status=LogConstants.STATUS_FAIL, tool="ASSET_MGR")
 
     def playSfx(self, asset_name: str) -> Surface:
         '''
@@ -49,10 +48,10 @@ class AssetManager:
             raise Exception("Sound settings in JSON are missing!")
 
         if os.path.exists(asset_path):
-            self.logger.writeLogEntry(f'Loading asset: {asset_name}', status=LogConstants.STATUS_OK_BLUE, tool="ASS_MAN")
+            self.logger.writeLogEntry(f'Loading asset: {asset_name}', status=LogConstants.STATUS_OK_BLUE, tool="ASSET_MGR")
             sound = mixer.Sound(asset_path)
             sound.set_volume(sound_settings.get('sfx_volume', 1.0)-0.4)
             sound.play()
 
         else:
-            self.logger.writeLogEntry(f'Couldn\'t find {asset_name}!', status=LogConstants.STATUS_FAIL, tool="ASS_MAN")
+            self.logger.writeLogEntry(f'Couldn\'t find {asset_name}!', status=LogConstants.STATUS_FAIL, tool="ASSET_MGR")

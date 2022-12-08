@@ -18,7 +18,7 @@ class JSONData:
         Load a given JSON file.
         '''
         if os.path.exists(path):
-            self.logger.writeLogEntry(f'Loading JSON: {path}', status=LogConstants.STATUS_OK_BLUE, tool="JSON_MAN")
+            self.logger.writeLogEntry(f'Loading JSON: {path}', status=LogConstants.STATUS_OK_BLUE, tool="JSON_MGR")
 
             out = None
             with open(path, 'r') as file:
@@ -26,7 +26,7 @@ class JSONData:
 
             return out
         else:
-            self.logger.writeLogEntry(f'Couldn\'t find {path}!', status=LogConstants.STATUS_FAIL, tool="JSON_MAN")
+            self.logger.writeLogEntry(f'Couldn\'t find {path}!', status=LogConstants.STATUS_FAIL, tool="JSON_MGR")
             exit()
 
     def writeJsonFile(self, data: ValidatedDict, path: str) -> None:

@@ -9,7 +9,7 @@ from engine.common.validated import ValidatedDict
 from engine.common.logger import LogManager
 from engine.common.constants import LogConstants
 from engine.screen import Screen
-from engine.asset import AssetManager
+from engine.common.asset import AssetManager
 
 # Init the args
 parser = argparse.ArgumentParser()

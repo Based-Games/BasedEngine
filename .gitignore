@@ -3,3 +3,6 @@ assets/.DS_Store
 *.pyc
 .DS_Store
 log.txt
+.eggs
+build/*
+dist/*
