@@ -1,6 +1,6 @@
 import pygame, platform
 from screeninfo import get_monitors
-from engine.validated import ValidatedDict
+from engine.common.validated import ValidatedDict
 from typing import Tuple
 
 class Screen():

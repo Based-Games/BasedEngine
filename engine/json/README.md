@@ -34,6 +34,7 @@ Used for storing game engine settings. User-editable.
     - `inputs` tag: Input settings. Not really used ATM.
         - `p1_io`: Set Player 1's IO type. Types ATM are just `HID` Default: `HID`
         - `p2_io`: Same as `p1_io`.
+        - `connect_port`: The port for things wanting to use IO to connect to. Changing this will change the server and client sides. Default: `59585`
     - `clock` tag: Clock settings. Just used for shop close stuff.
         - `shop_close`: Shop close settings. Leave these alone.
     - `engine` tag: Engine variables. Don't touch these.

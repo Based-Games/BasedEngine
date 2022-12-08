@@ -1,21 +1,47 @@
 # Main game engine.
 # We setup the engine, start a game thread, and stay running with a local API for getting states
 
-import pygame
+import pygame, argparse
 
-# Start importing game libs
-from engine.jsondata import JSONData
+# Start importing libs
+from engine.common.jsondata import JSONData
+from engine.common.validated import ValidatedDict
+from engine.common.logger import LogManager
+from engine.common.constants import LogConstants
 from engine.screen import Screen
-from engine.validated import ValidatedDict
 from engine.asset import AssetManager
 
-class GameEngine():
-    def __init__(self, engine_config: ValidatedDict, game_config: ValidatedDict):
+# Init the args
+parser = argparse.ArgumentParser()
+parser.add_argument('-n', '--no_jingle', help="Set to 'false' to disable the jingle.", action="store_true")
+parser.add_argument('-l', '--loglevel', help="System loglevel. Positions are 'disable', 'enable', 'debug', and 'errors'.", default='enable', choices=['disable', 'enable', 'debug', 'errors'])
+parser.add_argument('-q', '--quickstart', help="Enable system quickstart. Disables file checking and updating. Might break online services.", action="store_true")
+args = parser.parse_args()
+
+# Init the logger.
+logger = LogManager(args.loglevel)
+logger.initLogFile()
+
+path_prefix = './engine/json'
+config = JSONData(logger).loadJsonFile(f'{path_prefix}/config.json')
+game = JSONData(logger).loadJsonFile(f'{path_prefix}/game.json')
+
+class GameEngine(
+    AssetManager
+):
+    def __init__(self, engine_config: ValidatedDict, game_config: ValidatedDict, args: argparse.Namespace, logger: LogManager):
+        AssetManager.__init__(self, config.get_dict('system'), logger)
         self.run = True
         self.framerate = 60
         self.clock = pygame.time.Clock()
+        self.args = args
+        self.logger = logger
 
         self.engine_conf = engine_config.get_dict('system')
+        self.ver = self.engine_conf.get_dict('engine', ValidatedDict({})).get_str('build')
+        logger.writeLogEntry(f"Welcome to BasedEngine V{self.ver}!", LogConstants.STATUS_HEADER)
+        
+        logger.writeLogEntry(f'Startup args: {vars(args)}')
 
         # Let's start up the game.
         # Init pygame
@@ -36,6 +62,7 @@ class GameEngine():
         # - TEST_MODE
         # We will init this with None so that the engine can decide what to do.
 
+        self.last_state = 'INIT'
         self.current_state = 'INIT'
         self.current_events = None
 
@@ -57,16 +84,17 @@ class GameEngine():
             'TEST_MODE': "(test_menu)"
         }[self.current_state]
 
-        ver = self.engine_conf.get_dict('engine', ValidatedDict({})).get_str('build')
-        pygame.display.set_caption(f'BasedEngine V{ver} {engine_mode}')
+        # Log dat shit
+        if self.current_state != self.last_state:
+            self.logger.writeLogEntry(f'Switching game state to {self.current_state}.', LogConstants.STATUS_OK_CYAN)
+            self.last_state = self.current_state
+
+        pygame.display.set_caption(f'BasedEngine V{self.ver} {engine_mode}')
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.run = False
                 self.fadeLogoOut()
-                print('thank you for playing!')
-                pygame.display.quit()
-                exit()
 
     def fadeLogoIn(self):
         '''
@@ -75,13 +103,14 @@ class GameEngine():
         # Set the state
         self.current_state = "LOGO_IN"
 
-        # Start by playing the jingle.
-        AssetManager.playSfx('jingle.wav')
+        # Start by playing the jingle. Check the args.
+        if not self.args.no_jingle:
+            AssetManager.playSfx(self, 'jingle.wav')
 
         # Blank the screen
         self.screen.fill((0, 0, 0))
 
-        logo = AssetManager.loadImage('logo.png')
+        logo = AssetManager.loadImage(self, 'logo.png')
 
         for i in range(50):
             self.eventHandler()
@@ -105,7 +134,7 @@ class GameEngine():
         # Blank the screen
         self.screen.fill((210, 210, 210))
 
-        logo = AssetManager.loadImage('logo.png')
+        logo = AssetManager.loadImage(self, 'logo.png')
 
         for i in range(55):
             self.eventHandler()
@@ -139,15 +168,11 @@ class GameEngine():
             pygame.display.update()
             # Set has_looped.
             has_looped = True
+        self.logger.writeLogEntry('Goodbye! Thank you for playing.', LogConstants.STATUS_HEADER)
 
 if __name__ == "__main__":
-    path_prefix = './engine/json'
-    config = JSONData.loadJsonFile(f'{path_prefix}/config.json')
-    game = JSONData.loadJsonFile(f'{path_prefix}/game.json')
+    GameEngine(config, game, args, logger)
 
-    GameEngine(config, game)
-
-    # Game is over
-    print('thank you for playing!')
+    # Close for good luck.
     pygame.display.quit()
     exit()

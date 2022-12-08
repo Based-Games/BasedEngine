@@ -2,16 +2,20 @@ from pygame import Surface, image, mixer
 import os
 from sys import exit
 
-from engine.jsondata import JSONData
+from engine.common.validated import ValidatedDict
+from engine.common.constants import LogConstants
+from engine.common.logger import LogManager
 
 class AssetManager:
     '''
     Asset loaders, renderers, transformers and more!
     '''
     asset_prefix = "./engine/assets"
-    config = JSONData.loadJsonFile(f'./engine/json/config.json').get_dict('system')
 
-    @classmethod
+    def __init__(self, config: ValidatedDict, logger: LogManager) -> None:
+        self.logger = logger
+        self.config = config
+    
     def loadImage(self, asset_name: str) -> Surface:
         '''
         Load an image in Texture form.
@@ -24,14 +28,12 @@ class AssetManager:
         asset_path = f"{self.asset_prefix}/images/{asset_name}"
 
         if os.path.exists(asset_path):
-            print(f'loading asset: {asset_name}')
+            self.logger.writeLogEntry(f'Loading asset: {asset_name}', status=LogConstants.STATUS_OK_BLUE, tool="ASS_MAN")
             return image.load(asset_path)
 
         else:
-            print(f'{asset_name} was not found. Check your file paths.')
-            exit()
+            self.logger.writeLogEntry(f'Couldn\'t find {asset_name}!', status=LogConstants.STATUS_FAIL, tool="ASS_MAN")
 
-    @classmethod
     def playSfx(self, asset_name: str) -> Surface:
         '''
         Load a sound in sound form.
@@ -47,11 +49,10 @@ class AssetManager:
             raise Exception("Sound settings in JSON are missing!")
 
         if os.path.exists(asset_path):
-            print(f'loading asset: {asset_name}')
+            self.logger.writeLogEntry(f'Loading asset: {asset_name}', status=LogConstants.STATUS_OK_BLUE, tool="ASS_MAN")
             sound = mixer.Sound(asset_path)
             sound.set_volume(sound_settings.get('sfx_volume', 1.0)-0.4)
             sound.play()
 
         else:
-            print(f'{asset_name} was not found. Check your file paths.')
-            exit()
+            self.logger.writeLogEntry(f'Couldn\'t find {asset_name}!', status=LogConstants.STATUS_FAIL, tool="ASS_MAN")

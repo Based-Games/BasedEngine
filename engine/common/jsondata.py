@@ -2,20 +2,23 @@ import os
 from sys import exit
 from json import dumps, loads
 
-from engine.validated import ValidatedDict
+from engine.common.validated import ValidatedDict
+from engine.common.constants import LogConstants
+from engine.common.logger import LogManager
 
 class JSONData:
     '''
     Used for loading and saving engine JSON data.
     '''
+    def __init__(self, logger: LogManager) -> None:
+        self.logger = logger
 
-    @classmethod
     def loadJsonFile(self, path: str) -> ValidatedDict:
         '''
         Load a given JSON file.
         '''
         if os.path.exists(path):
-            print(f'Loading file: {path}')
+            self.logger.writeLogEntry(f'Loading JSON: {path}', status=LogConstants.STATUS_OK_BLUE, tool="JSON_MAN")
 
             out = None
             with open(path, 'r') as file:
@@ -23,10 +26,9 @@ class JSONData:
 
             return out
         else:
-            print(f'{file} does not exist! Please check your path.')
+            self.logger.writeLogEntry(f'Couldn\'t find {path}!', status=LogConstants.STATUS_FAIL, tool="JSON_MAN")
             exit()
 
-    @classmethod
     def writeJsonFile(self, data: ValidatedDict, path: str) -> None:
         '''
         Write a given JSON file.

@@ -36,7 +36,8 @@
             "p2_io": "HID",
             "p1_stick": 4,
             "p2_stick": 4,
-            "jvs_board": null
+            "jvs_data": null,
+            "connect_port": 59585
         },
         "clock": {
             "shop_close": {
