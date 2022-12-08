@@ -66,8 +66,23 @@ class GameEngine(
         self.current_state = 'INIT'
         self.current_events = None
 
+        # Empty dict for assets.
+        self.assets = {}
+        self.load_assets()
+
         # Now, we begin the loop
         self.engineLoop()
+
+    def load_assets(self) -> None:
+        '''
+        Load in all needed assets. Run at start.
+        '''
+        # Images
+        image_list = [
+            'logo.png'
+        ]
+        for image in image_list:
+            self.assets[image] = AssetManager.loadImage(self, image)
 
     def eventHandler(self):
         '''
@@ -110,7 +125,7 @@ class GameEngine(
         # Blank the screen
         self.screen.fill((0, 0, 0))
 
-        logo = AssetManager.loadImage(self, 'logo.png')
+        logo = self.assets.get('logo.png')
 
         for i in range(50):
             self.eventHandler()
@@ -134,7 +149,7 @@ class GameEngine(
         # Blank the screen
         self.screen.fill((210, 210, 210))
 
-        logo = AssetManager.loadImage(self, 'logo.png')
+        logo = self.assets.get('logo.png')
 
         for i in range(55):
             self.eventHandler()
@@ -161,7 +176,7 @@ class GameEngine(
             self.clock.tick(self.framerate)
 
             # Load the fade in animation, but only if it's the first loop.
-            if not has_looped:
+            if not has_looped and not self.args.quickstart:
                 self.fadeLogoIn()
 
             # Update screen.
