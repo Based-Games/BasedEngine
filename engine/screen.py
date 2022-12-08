@@ -1,23 +1,27 @@
 import pygame, platform
 from screeninfo import get_monitors
+
 from engine.common.validated import ValidatedDict
-from typing import Tuple
+from engine.common.constants import LogConstants
+from engine.common.logger import LogManager
 
 class Screen():
-    def __init__(self, system_config: ValidatedDict):
+    def __init__(self, system_config: ValidatedDict, logger: LogManager):
         # Load the screen config and the game config
         self.screen_conf = system_config.get_dict('display')
         self.engine_conf = system_config.get_dict('engine')
+        self.logger = logger
 
         # Sanity checks on file
         if self.screen_conf == None:
-            raise Exception('Null screen config!\nCheck your files!')
+            self.logger.writeLogEntry('Null screen config, check your files!', LogConstants.STATUS_FAIL, tool="SCREEN_MGR")
+
         if self.engine_conf == None:
-            raise Exception('Null engine config!\nCheck your files!')
+            self.logger.writeLogEntry('Null engine config, check your files!', LogConstants.STATUS_FAIL, tool="SCREEN_MGR")
 
         # Get the system so that we can load a larger icon for MacOS.
         system = platform.system()
-        print(f'Running on {system}!')
+        self.logger.writeLogEntry(f'You\'re running on {system}.', LogConstants.STATUS_OK_GREEN)
         if system == 'Darwin':
             self.icon = './engine/assets/icons/icon_high.png'
         else:
@@ -59,8 +63,10 @@ class Screen():
             pygame_flags = pygame.NOFRAME
 
         # We should init the caption and icon before the screen runs.
+        self.logger.writeLogEntry(f'Video mode: ({window_height}x{window_width}), {mode}', LogConstants.STATUS_OK_GREEN, tool="SCREEN_MGR")
+
         ver = self.engine_conf.get_str('build')
-        pygame.display.set_caption(f'BasedEngine V{ver} (init...)')
+        pygame.display.set_caption(f'BasedEngine V{ver} (innit...)')
         pygame.display.set_icon(pygame.image.load(self.icon))
 
         # Start the screen

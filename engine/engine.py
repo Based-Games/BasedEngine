@@ -48,7 +48,7 @@ class GameEngine(
         pygame.init()
 
         # Init pygame screen, return
-        self.screen, self.resolution = Screen(engine_config.get_dict('system')).initScreen()
+        self.screen, self.resolution = Screen(engine_config.get_dict('system'), self.logger).initScreen()
         pygame.display.update()
 
         # Current scene/screen state. Here's a list of them.
